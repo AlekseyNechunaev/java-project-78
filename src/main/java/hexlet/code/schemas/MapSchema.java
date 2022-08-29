@@ -12,7 +12,7 @@ public final class MapSchema extends BaseSchema {
         return this;
     }
 
-    public MapSchema sizeOf(int exceptedSize) {
+    public MapSchema sizeof(int exceptedSize) {
         addChecker(map -> map instanceof Map && ((Map<?, ?>) map).size() == exceptedSize);
         return this;
     }
