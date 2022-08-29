@@ -17,8 +17,8 @@ public final class MapSchema extends BaseSchema {
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema> shapes) {
-        this.shapes.putAll(shapes);
+    public MapSchema shape(Map<String, BaseSchema> inputShapes) {
+        this.shapes.putAll(inputShapes);
         return this;
     }
 
