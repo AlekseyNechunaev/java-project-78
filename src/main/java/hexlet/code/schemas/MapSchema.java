@@ -1,7 +1,5 @@
 package hexlet.code.schemas;
 
-import hexlet.code.BaseSchema;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,12 +8,12 @@ public final class MapSchema extends BaseSchema {
     private final Map<String, BaseSchema> shapes = new HashMap<>();
 
     public MapSchema required() {
-        getChecked().add(map -> map instanceof Map);
+        addChecker(map -> map instanceof Map);
         return this;
     }
 
     public MapSchema sizeOf(int exceptedSize) {
-        getChecked().add(map -> map instanceof Map && ((Map<?, ?>) map).size() == exceptedSize);
+        addChecker(map -> map instanceof Map && ((Map<?, ?>) map).size() == exceptedSize);
         return this;
     }
 
@@ -26,6 +24,14 @@ public final class MapSchema extends BaseSchema {
 
     @Override
     public boolean isValid(Object obj) {
-        return super.isValid(obj);
+        if (!super.isValid(obj)) {
+            return false;
+        }
+        if (!shapes.isEmpty()) {
+            Map<?, ?> map = (Map<?, ?>) obj;
+            return shapes.entrySet().stream()
+                    .allMatch(entry -> shapes.get(entry.getKey()).isValid(map.get(entry.getKey())));
+        }
+        return true;
     }
 }
