@@ -14,7 +14,7 @@ public abstract class BaseSchema {
         this.classType = inputClassType;
     }
 
-    public void setCalledRequired(boolean inputCallRequired) {
+    public final void setCalledRequired(boolean inputCallRequired) {
         this.isCalledRequired = inputCallRequired;
     }
 

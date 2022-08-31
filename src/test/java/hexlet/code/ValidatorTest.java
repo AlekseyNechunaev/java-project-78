@@ -31,7 +31,9 @@ public class ValidatorTest {
     @Test
     void validatorStringSchemaTestMinLength() {
         StringSchema stringSchema = VALIDATOR.string();
-        stringSchema.required().minLength(4);
+        stringSchema.minLength(4);
+        assertThat(stringSchema.isValid(null)).isTrue();
+        stringSchema.required();
         assertThat(stringSchema.isValid("tex")).isFalse();
         assertThat(stringSchema.isValid("texta")).isTrue();
         assertThat(stringSchema.isValid("text")).isTrue();
@@ -41,6 +43,9 @@ public class ValidatorTest {
     void validatorStringSchemaTestContains() {
         StringSchema stringSchema = VALIDATOR.string();
         String text = "this is text";
+        stringSchema.contains("te");
+        assertThat(stringSchema.isValid(null)).isTrue();
+        stringSchema.required();
         stringSchema.required().contains("te");
         assertThat(stringSchema.isValid(text)).isTrue();
         stringSchema.contains("text");
@@ -79,7 +84,9 @@ public class ValidatorTest {
     @Test
     void validatorNumberSchemaRange() {
         NumberSchema numberSchema = VALIDATOR.number();
-        numberSchema.required().range(5, 10);
+        numberSchema.range(5, 10);
+        assertThat(numberSchema.isValid(null)).isTrue();
+        numberSchema.required();
         assertThat(numberSchema.isValid(4)).isFalse();
         assertThat(numberSchema.isValid(5)).isTrue();
         assertThat(numberSchema.isValid(11)).isFalse();
