@@ -6,9 +6,19 @@ import java.util.function.Predicate;
 
 public abstract class BaseSchema {
 
-    private final List<Predicate<Object>> checks = new ArrayList<>();
+    private final List<Predicate> checks = new ArrayList<>();
+    private boolean isCalledRequired;
+    private final Class<?> classType;
 
-    protected final void addChecker(Predicate<Object> p) {
+    protected BaseSchema(Class<?> inputClassType) {
+        this.classType = inputClassType;
+    }
+
+    public void setCalledRequired(boolean inputCallRequired) {
+        this.isCalledRequired = inputCallRequired;
+    }
+
+    protected final void addChecker(Predicate p) {
         checks.add(p);
     }
 
@@ -18,6 +28,10 @@ public abstract class BaseSchema {
      * returns true if the object matches all checks from the list, or false if the object does not match at least one
      */
     public boolean isValid(Object obj) {
-        return checks.stream().allMatch(check -> check.test(obj));
+        boolean result = !isCalledRequired;
+        if (classType.isInstance(obj)) {
+            result = checks.stream().allMatch(check -> check.test(obj));
+        }
+        return result;
     }
 }
